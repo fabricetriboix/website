@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HMRC: both sides of a multi-tenant platform — Falcon One</title>
+    <meta
+      name="description"
+      content="On HMRC's HAWK platform I worked on the platform itself and I was the platform team's point of contact for one of its tenants."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="chrome">
+      <div class="sheet">
+        <header class="site-header">
+          <div class="wrap header-inner">
+            <a class="logo" href="../index.html">
+              <img
+                src="../assets/logo-on-white.png"
+                alt="Falcon One Limited"
+                width="665"
+                height="233"
+              />
+            </a>
+            <nav class="site-nav" aria-label="Primary">
+              <a href="../index.html">Home</a>
+              <a href="../index.html#about">About</a>
+              <a href="../index.html#services">Services</a>
+              <a href="../index.html#work" aria-current="page">Work</a>
+              <a
+                href="https://linkedin.com/in/ftriboix"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn</a
+              >
+            </nav>
+          </div>
+          <div class="hairline" aria-hidden="true"></div>
+        </header>
+
+        <main id="main" class="article wrap">
+          <a class="back" href="../index.html#work">Back to work</a>
+          <h1>HMRC: both sides of a multi-tenant platform</h1>
+          <p class="one-sentence">
+            <strong>In one sentence:</strong> On HMRC's HAWK platform I worked
+            on the platform itself and I was the platform team's point of
+            contact for one of its tenants, and doing both at once taught me
+            more about why tenant onboarding is slow than either job would have
+            on its own.
+          </p>
+          <dl class="meta">
+            <div>
+              <dt>Client</dt>
+              <dd>HM Revenue &amp; Customs (UK)</dd>
+            </div>
+            <div>
+              <dt>Sector</dt>
+              <dd>Government</dd>
+            </div>
+            <div>
+              <dt>When</dt>
+              <dd>June 2023 to March 2024</dd>
+            </div>
+            <div>
+              <dt>Role</dt>
+              <dd>Platform engineer, HAWK platform team, remote</dd>
+            </div>
+            <div>
+              <dt>Stack</dt>
+              <dd>
+                AWS, EKS, RDS, Terraform, HashiCorp Vault, Keycloak, GitLab CI,
+                Helm, Prometheus, Grafana
+              </dd>
+            </div>
+          </dl>
+
+          <h2>The context</h2>
+          <p>
+            HAWK is a turn-key runtime platform built by HMRC for HMRC. It
+            provides Kubernetes (EKS), databases (RDS), secrets management
+            (Vault), identity (Keycloak), monitoring (Prometheus and Grafana)
+            and CI/CD, so that other HMRC projects can bring their applications
+            and not have to build all of that themselves. Those projects are the
+            platform's tenants.
+          </p>
+          <p>
+            I joined the HAWK platform team as a platform engineer. About half
+            of my time went on the platform itself: new features, improvements,
+            bug fixes, documentation. The other half went on being the platform
+            team's point of contact for one particular tenant.
+          </p>
+
+          <h2>The problem</h2>
+          <p>
+            Every multi-tenant platform has the same tension. The platform team
+            wants tenants to use the platform the way it was designed. The
+            tenants want to ship their application and they experience the
+            platform as a set of rules that get in the way. Both sides are
+            right, and the gap between them is where onboarding slows down,
+            tickets pile up, and, in the worst cases, tenants quietly start
+            building their own infrastructure on the side.
+          </p>
+          <p>
+            HAWK was a good platform. It still had this tension, because all
+            platforms do.
+          </p>
+
+          <h2>What I did on the platform side</h2>
+          <p>
+            Platform work is mostly unglamorous and that is fine. I implemented
+            features and improvements that tenants had asked for, fixed bugs,
+            and updated the documentation. When you are also talking to a tenant
+            every day, you get a very direct sense of which bugs matter and
+            which documentation pages people actually read, and I used that to
+            decide what to work on first.
+          </p>
+
+          <h2>What I did on the tenant side</h2>
+          <p>
+            I was in charge of looking after one tenant and making sure they
+            could use the platform to its full abilities. In practice this
+            meant:
+          </p>
+          <ul>
+            <li>
+              Writing and maintaining their CI/CD pipelines in GitLab, so that
+              their code got built, tested and deployed to the right
+              environments without anybody having to think about it.
+            </li>
+            <li>Deploying and maintaining their environments on the platform.</li>
+            <li>
+              Troubleshooting the issues they ran into across those
+              environments, which is where you learn what the platform's error
+              messages look like to somebody who did not build it.
+            </li>
+            <li>
+              Explaining how the platform works, and how to get the most out of
+              it, to engineers whose job was their application and not the
+              platform.
+            </li>
+          </ul>
+          <p>
+            The tenant provided excellent feedback on the work, and in
+            particular on the communication. On a multi-tenant platform, the
+            quality of the communication between the platform team and the
+            tenants is not a soft skill. It is part of the platform itself.
+          </p>
+
+          <h2>What I learned that I still use</h2>
+          <p>
+            Looking after a tenant while building the platform is the best way I
+            know to find out what actually makes onboarding slow. A few things I
+            took away, and that I now look for first when I review somebody
+            else's platform:
+          </p>
+          <p>
+            <strong>The documentation is written from the inside.</strong>
+            Platform teams document what the platform does. Tenants need to know
+            what to do. These are different documents, and most platforms only
+            have the first one.
+          </p>
+          <p>
+            <strong>The first pipeline is the hardest.</strong> Once a tenant
+            has one working CI/CD pipeline that they understand, they can copy
+            it forever. Until then, every deployment is a support ticket. Giving
+            a new tenant a working, minimal pipeline on day one pays for itself
+            many times over.
+          </p>
+          <p>
+            <strong>Errors should name the fix.</strong> When something goes
+            wrong on the platform, the tenant sees an error message. If that
+            message tells them what to do, they do it. If it does not, they
+            raise a ticket, and the platform team spends some precious time
+            working out what they would have known instantly.
+          </p>
+          <p>
+            <strong>Somebody on the platform team should own each tenant.</strong>
+            Not to do their work for them, but to be the person they call.
+            Rotating this role around the team means everybody on the platform
+            team eventually understands what the platform feels like from the
+            outside.
+          </p>
+
+          <h2>The result</h2>
+          <p>
+            The tenant was able to use the platform to its full abilities, which
+            was the brief, and their feedback on the work was excellent. The
+            platform got a steady stream of fixes and improvements that came
+            directly from watching a real tenant use it. And I came away with a
+            set of opinions about tenant onboarding that I have since applied at
+            a bank and at a pharmaceutical company, which suggests they are not
+            specific to HMRC.
+          </p>
+
+          <h2>What this means if you run a multi-tenant platform</h2>
+          <p>
+            If your tenants are slow to onboard, if your ticket queue is full of
+            questions the documentation was supposed to answer, or if you
+            suspect that some teams are routing around the platform rather than
+            through it, the problem is usually in the gap I described above, and
+            it is usually fixable. I am happy to come and look at it from both
+            sides.
+          </p>
+        </main>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <img
+          class="footer-logo"
+          src="../assets/logo-on-navy.png"
+          alt="Falcon One Limited"
+          width="632"
+          height="220"
+        />
+        <p class="footer-name">Falcon One</p>
+        <p class="footer-legal">
+          Falcon One Limited · Registered in England no 5854724
+        </p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

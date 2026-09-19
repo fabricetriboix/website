@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      NatWest: per-tenant egress for a multi-tenant Kubernetes platform —
+      Falcon One
+    </title>
+    <meta
+      name="description"
+      content="I designed and built the per-tenant egress solution for NatWest's next-generation platform for business-critical services."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="chrome">
+      <div class="sheet">
+        <header class="site-header">
+          <div class="wrap header-inner">
+            <a class="logo" href="../index.html">
+              <img
+                src="../assets/logo-on-white.png"
+                alt="Falcon One Limited"
+                width="665"
+                height="233"
+              />
+            </a>
+            <nav class="site-nav" aria-label="Primary">
+              <a href="../index.html">Home</a>
+              <a href="../index.html#about">About</a>
+              <a href="../index.html#services">Services</a>
+              <a href="../index.html#work" aria-current="page">Work</a>
+              <a
+                href="https://linkedin.com/in/ftriboix"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn</a
+              >
+            </nav>
+          </div>
+          <div class="hairline" aria-hidden="true"></div>
+        </header>
+
+        <main id="main" class="article wrap">
+          <a class="back" href="../index.html#work">Back to work</a>
+          <h1>
+            NatWest: per-tenant egress for a multi-tenant Kubernetes platform
+          </h1>
+          <p class="one-sentence">
+            <strong>In one sentence:</strong> I designed and built the
+            per-tenant egress solution for NatWest's next-generation platform
+            for business-critical services, so that tenants could reach the
+            on-premise services they need without stepping on each other, and so
+            that the platform team would know straight away when something was
+            wrong.
+          </p>
+          <dl class="meta">
+            <div>
+              <dt>Client</dt>
+              <dd>NatWest Group (London, UK)</dd>
+            </div>
+            <div>
+              <dt>Sector</dt>
+              <dd>Banking</dd>
+            </div>
+            <div>
+              <dt>When</dt>
+              <dd>December 2024 to September 2025</dd>
+            </div>
+            <div>
+              <dt>Role</dt>
+              <dd>Platform engineer in the core platform team</dd>
+            </div>
+            <div>
+              <dt>Stack</dt>
+              <dd>
+                AWS, EKS, Istio, Terraform, OpenTelemetry, Amazon Managed
+                Prometheus, Amazon Managed Grafana, CloudWatch
+              </dd>
+            </div>
+          </dl>
+
+          <h2>The context</h2>
+          <p>
+            NatWest was building the next generation of its multi-tenant
+            platform to run what the bank calls Important Business Services,
+            which is the regulator's term for the services that must not fail.
+            The platform runs on EKS. The tenants are the bank's own application
+            teams, each of them with their own workloads, their own on-premise
+            dependencies and their own view on how urgent their requests are.
+          </p>
+          <p>
+            I joined the core platform team, mostly to work on tenant isolation
+            and observability. This case study is about the first of those. The
+            observability work has its own
+            <a href="natwest-observability-you-can-trust.html">write-up</a>.
+          </p>
+
+          <h2>The problem</h2>
+          <p>
+            On a shared platform, egress is one of the places where tenants end
+            up sharing more than they should. If everybody goes out through the
+            same gateways, one tenant with a chatty application or a
+            misbehaving retry loop can slow everybody else down. This is the
+            well-known "noisy neighbour" problem. In a bank there is a second
+            problem on top of it: each tenant should only be able to reach the
+            on-premise services it is actually allowed to reach, and this has to
+            be provable.
+          </p>
+          <p>
+            Consequently, the platform needed egress that was segregated per
+            tenant, where each tenant could declare which on-premise services
+            their applications need, and where a failure in one tenant's egress
+            would be detected quickly and would not affect anybody else.
+          </p>
+
+          <h2>What was hard</h2>
+          <p>Three things, in increasing order of difficulty.</p>
+          <p>
+            The first was making it self-service. A design where the platform
+            team has to hand-edit configuration every time a tenant wants to
+            reach a new destination does not scale, and it makes the platform
+            team the bottleneck. Tenants had to be able to configure their own
+            egress within limits set by the platform.
+          </p>
+          <p>
+            The second was knowing when it breaks. An egress gateway that is
+            silently down is worse than one that is loudly down, because the
+            tenant finds out before the platform team does.
+          </p>
+          <p>
+            The third was plain TCP. Istio is very comfortable with HTTP, but
+            some of the on-premise services the tenants depend on used plain TCP
+            protocols, and the traffic still had to be encrypted in transit and
+            attributable to a tenant. Getting non-HTTP traffic to flow cleanly
+            through Istio egress gateways, wrapped in mTLS, was the technically
+            tricky part of this work.
+          </p>
+
+          <h2>What I did</h2>
+          <p>
+            I designed, implemented and tested a solution based on Istio egress
+            gateways, one set per tenant. Each tenant gets its own gateway, so a
+            problem with one tenant's egress stays with that tenant. The
+            configuration is all in code and goes through the normal review
+            process.
+          </p>
+          <p>
+            For self-service, I built a mechanism that lets a tenant declare the
+            on-premise services their applications are allowed to reach, in
+            their own configuration, without needing the platform team to
+            intervene. The platform team still have to approve the changes, so
+            the tenant can't just do what they want.
+          </p>
+          <p>
+            For detection, I wrote continuous health checks that exercise each
+            gateway and alert the SRE team when one stops working. These are not
+            just "is the pod running" checks. They test that traffic actually
+            gets through.
+          </p>
+          <p>
+            For plain TCP, I implemented a way of routing TCP traffic by
+            encapsulating it into Istio mTLS, so that non-HTTP protocols get the
+            same encryption and the same per-tenant segregation as everything
+            else. I will spare you the details here, but it took a fair amount
+            of reading of Istio's documentation and a fair amount of testing.
+          </p>
+
+          <h2>The result</h2>
+          <p>
+            The egress solution went into production and the tenants used it as
+            intended. The plain TCP encapsulation worked, which was not a given
+            when I started. The health checks do what they were meant to do: the
+            SRE team finds out about a failing gateway from an alert, not from a
+            tenant.
+          </p>
+
+          <h2>What I would do differently</h2>
+          <p>
+            I built the gateways first and the health checks second, which is
+            the natural order and the wrong one. The health checks are a small
+            amount of work and they are what turns an egress gateway from
+            something you hope is working into something you know is working. If
+            I were doing it again I would write the checks first, run them
+            against the gateways as I built them, and I would have caught a
+            couple of configuration mistakes earlier than I did.
+          </p>
+          <p>
+            I would also have pushed for the self-service configuration to be
+            part of the design from the very first conversation with the
+            tenants, rather than something I added once the gateways existed.
+            Tenants who have been told they can declare their own destinations
+            start thinking about what they need much earlier, and that saves
+            everybody time.
+          </p>
+
+          <h2>What this means if you are building something similar</h2>
+          <p>
+            Per-tenant egress is not an exotic requirement, but it is one that
+            gets bolted on late and badly if it is not designed in. If you are
+            building a multi-tenant Kubernetes platform in a regulated
+            environment and egress is still "one NAT gateway and hope", I am
+            happy to talk it through.
+          </p>
+        </main>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <img
+          class="footer-logo"
+          src="../assets/logo-on-navy.png"
+          alt="Falcon One Limited"
+          width="632"
+          height="220"
+        />
+        <p class="footer-name">Falcon One</p>
+        <p class="footer-legal">
+          Falcon One Limited · Registered in England no 5854724
+        </p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

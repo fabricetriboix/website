@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      NatWest: observability you can actually trust — Falcon One
+    </title>
+    <meta
+      name="description"
+      content="On NatWest's next-generation platform I took the observability stack from a proof of concept to a production service."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="chrome">
+      <div class="sheet">
+        <header class="site-header">
+          <div class="wrap header-inner">
+            <a class="logo" href="../index.html">
+              <img
+                src="../assets/logo-on-white.png"
+                alt="Falcon One Limited"
+                width="665"
+                height="233"
+              />
+            </a>
+            <nav class="site-nav" aria-label="Primary">
+              <a href="../index.html">Home</a>
+              <a href="../index.html#about">About</a>
+              <a href="../index.html#services">Services</a>
+              <a href="../index.html#work" aria-current="page">Work</a>
+              <a
+                href="https://linkedin.com/in/ftriboix"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn</a
+              >
+            </nav>
+          </div>
+          <div class="hairline" aria-hidden="true"></div>
+        </header>
+
+        <main id="main" class="article wrap">
+          <a class="back" href="../index.html#work">Back to work</a>
+          <h1>
+            NatWest: observability you can actually trust, on a multi-tenant
+            platform
+          </h1>
+          <p class="one-sentence">
+            <strong>In one sentence:</strong> On NatWest's next-generation
+            platform for business-critical services I took the observability
+            stack from a proof of concept to a production service, made alerting
+            work for the AWS managed services the platform depends on, made
+            every metric and trace attributable to a tenant, and then made sure
+            the whole telemetry pipeline tells you when it is broken.
+          </p>
+          <dl class="meta">
+            <div>
+              <dt>Client</dt>
+              <dd>NatWest Group (London, UK)</dd>
+            </div>
+            <div>
+              <dt>Sector</dt>
+              <dd>Banking</dd>
+            </div>
+            <div>
+              <dt>When</dt>
+              <dd>December 2024 to September 2025</dd>
+            </div>
+            <div>
+              <dt>Role</dt>
+              <dd>Platform engineer in the core platform team</dd>
+            </div>
+            <div>
+              <dt>Stack</dt>
+              <dd>
+                AWS, EKS, Terraform, OpenTelemetry, Amazon Managed Prometheus,
+                Amazon Managed Grafana, CloudWatch
+              </dd>
+            </div>
+          </dl>
+
+          <h2>The context</h2>
+          <p>
+            NatWest was building the next generation of its multi-tenant
+            platform to run Important Business Services, the regulator's term
+            for the services that must not fail. The platform runs on EKS with a
+            good number of AWS managed services around it. The tenants are the
+            bank's own application teams.
+          </p>
+          <p>
+            I joined the core platform team to work on tenant isolation and
+            observability. I have written about the isolation side separately
+            (see the
+            <a href="natwest-per-tenant-egress.html">per-tenant egress</a>
+            case study). This one is about observability and alerting, which is
+            where I ended up spending most of my time.
+          </p>
+
+          <h2>The problem</h2>
+          <p>
+            A platform that runs business-critical services has to be
+            observable, and not in the "we have Grafana installed" sense.
+            Concretely, four things needed to be true and were not yet:
+          </p>
+          <ol>
+            <li>
+              Grafana existed as a proof of concept, set up by hand. It needed
+              to become a production service that could be rebuilt from code and
+              would not depend on anyone remembering how it was configured.
+            </li>
+            <li>
+              The platform relied on a number of AWS managed services, and all
+              their metrics land in CloudWatch, whether you like it or not.
+              There was no systematic way to alert on them.
+            </li>
+            <li>
+              Metrics and traces were flowing, but they did not carry enough
+              context for a tenant to tell which of their workloads a signal
+              came from. On a multi-tenant platform, a metric you cannot
+              attribute to a tenant is not much use to anyone.
+            </li>
+            <li>
+              Nobody was checking that the telemetry pipeline itself was
+              working. Everybody assumed that if the dashboards showed data, the
+              data was complete.
+            </li>
+          </ol>
+
+          <h2>What was hard</h2>
+          <p>
+            The hard part of observability on a multi-tenant platform is not
+            installing the tools. It is that the platform team and the tenants
+            need different things from the same data, and that the pipeline sits
+            in the middle of everything, so when it breaks it breaks quietly. A
+            dashboard with a gap in it looks exactly like a dashboard where
+            nothing happened.
+          </p>
+          <p>
+            There is also the managed services problem. You do not get to choose
+            where AWS sends the metrics for RDS or a load balancer. They go to
+            CloudWatch. If your alerting lives in Prometheus, you either move
+            the metrics or you build alerting in two places. Both have a cost.
+          </p>
+
+          <h2>What I did</h2>
+          <p>
+            <strong>Grafana as a production service, in Terraform.</strong> I
+            designed, implemented and tested an infrastructure-as-code solution
+            to deploy and configure Amazon Managed Grafana: the workspace
+            itself, the dashboards, the plugins, and the data sources. I also
+            implemented the Terraform code for data sources such that CloudWatch
+            Logs and Amazon Managed Prometheus would register themselves with
+            Grafana, so adding a new data source is part of deploying the
+            respective features. The proof of concept became something you can
+            destroy and recreate.
+          </p>
+          <p>
+            <strong>Alerting on AWS managed services.</strong> I researched
+            bringing the CloudWatch metrics into Amazon Managed Prometheus so
+            that all metrics would live in one place. Given the time available
+            we decided not to pursue that route for now, so instead I designed a
+            simple, generic way of defining CloudWatch alarms in Terraform, such
+            that adding an alarm for a new service or a new threshold is a few
+            lines of configuration rather than a new piece of engineering. I
+            tested it on a set of alarms and it proved to work as intended.
+          </p>
+          <p>
+            <strong>Alerting from log content.</strong> Some failures only show
+            up in logs. I submitted to the project manager that we should be
+            able to generate alerts based on what the logs say, not only on
+            metrics, and I wrote an Architecture Decision Record laying out a
+            couple of ways to achieve this with their trade-offs, so that the
+            decision could be made properly rather than by whoever got to it
+            first.
+          </p>
+          <p>
+            <strong>Telemetry that tenants can use.</strong> In order for a
+            tenant to make sense of their metrics and traces, the signals need
+            to carry the Kubernetes context they were generated in: namespace,
+            workload, pod. I configured the OpenTelemetry collector agents to
+            extract this metadata and attach it as labels to metrics and traces,
+            using the <code>k8sattributesprocessor</code> component. The tenants
+            found this extremely useful, and a definite enhancement over what
+            was there before.
+          </p>
+          <p>
+            <strong>Testing the pipeline itself.</strong> This is the piece I
+            care most about. I suggested that we should continuously test the
+            end-to-end path for telemetry, from an application pod all the way
+            to the metrics being stored in Amazon Managed Prometheus, rather
+            than assume it works because the dashboards are not empty. To that
+            effect, I added OpenTelemetry cron jobs that regularly emit known
+            metrics and traces, and alerts if they do not arrive where they
+            should. It is a small amount of code.
+          </p>
+
+          <h2>The result</h2>
+          <p>
+            Grafana is a production service defined in code, with dashboards and
+            data sources deployed automatically. Alarms on the AWS managed
+            services are declared in Terraform and reviewed like everything
+            else. The path from logs to alerts has a written decision behind it.
+            Tenants can look at a metric or a trace and know which of their
+            workloads produced it.
+          </p>
+          <p>
+            And the pipeline health checks proved very useful indeed. Within
+            weeks they detected that the path for metrics and traces was
+            intermittently not working. Nothing on the dashboards gave this
+            away; the data that did arrive looked fine. Without the checks,
+            somebody would have discovered the gaps during an incident, which is
+            the worst possible time to find out your observability has holes in
+            it.
+          </p>
+
+          <h2>What I would do differently</h2>
+          <p>
+            I would push for centralising all metrics in Amazon Managed
+            Prometheus at the very start of the project, when the cost of doing
+            it is low, rather than accept CloudWatch as a second alerting
+            system. The generic CloudWatch alarms work well and I would build
+            them again, but two alerting systems in parallel adds friction, and
+            the earlier that decision is made the cheaper it is.
+          </p>
+          <p>
+            I would also build the pipeline health checks on day one, before
+            anything else. They are cheap, and everything else you build on top
+            of the telemetry is only as trustworthy as the pipeline underneath
+            it.
+          </p>
+
+          <h2>What this means if you run a platform</h2>
+          <p>
+            Most platforms I see have observability tools installed with either
+            too little or too much of generic dashboards found on the internet.
+            The tools are there; the dashboards have data; nobody can say for
+            certain whether the data is complete, whether the alerts would fire
+            if something went wrong on a managed service, or which tenant a
+            given signal belongs to. All of that is fixable, and most of it is a
+            few weeks of focused work rather than a programme. If any of the
+            four problems at the top of this page sound familiar, I am happy to
+            come and have a look.
+          </p>
+        </main>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <img
+          class="footer-logo"
+          src="../assets/logo-on-navy.png"
+          alt="Falcon One Limited"
+          width="632"
+          height="220"
+        />
+        <p class="footer-name">Falcon One</p>
+        <p class="footer-legal">
+          Falcon One Limited · Registered in England no 5854724
+        </p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

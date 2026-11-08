@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A shared egress is how tenants become each other's incidents | Fabrice Triboix</title>
+    <meta name="description" content="Shared egress is how one tenant becomes another tenant's incident." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <img class="article-hero" src="../assets/blog/shared-egress.png" alt="A shared egress is how tenants become each other's incidents" width="1600" height="900" />
+        <h1>A shared egress is how tenants become each other's incidents</h1>
+          <p>Tenant A deploys a change that increases outbound traffic or modifies its egress configuration. Shortly afterwards, Tenant B struggles to reach an external service it depends on. Tenant B's application hasn't changed. Its configuration hasn't changed. Yet its service is now impaired because of something another tenant did. This is the risk of shared egress.</p>
+          <p>In a multi-tenant platform, one tenant should not become another tenant's incident simply because they share infrastructure.</p>
+          <p>Shared egress can reduce infrastructure overhead, but it also introduces several risks.</p>
+          <h2 id="shared-capacity">1. Shared capacity</h2>
+          <p>Tenant A experiences a spike in outbound traffic. Perhaps request volumes have increased, an external service is malfunctioning and triggering retries, or a bug has caused a retry loop. The shared egress infrastructure becomes saturated, degrading connectivity for other tenants. Their applications may then trigger their own retries, amplifying the problem.</p>
+          <p>Rate limiting can help, but managing it at scale is not trivial. Imagine X tenants, each running Y applications that access Z external services. The number of policies and rules can grow rapidly. Allocating capacity fairly also requires understanding each tenant's needs, which may change over time, sometimes on an hourly basis.</p>
+          <p>The question is not just whether egress has enough capacity. It's whether one tenant can consume capacity that other tenants depend on.</p>
+          <h2 id="shared-configuration">2. Shared configuration</h2>
+          <p>A change to a common egress policy, gateway or firewall rule can unintentionally affect multiple tenants.</p>
+          <p>Maintaining tenant-specific configuration in a shared system requires careful separation and the ability to combine multiple sources of configuration safely. Concurrent changes also need to be handled without race conditions or unintended overwrites.</p>
+          <p>The result can be a significant amount of complexity for the platform team, even when tenants are only changing seemingly simple settings.</p>
+          <h2 id="shared-external-identity">3. Shared external identity</h2>
+          <p>Traffic leaving through a shared egress gateway may appear to external services to originate from the same public IP address.</p>
+          <p>This can complicate tenant-specific allowlisting, traffic attribution and troubleshooting, particularly when external systems use source IP addresses to identify or control access.</p>
+          <h2 id="shared-failure-domain">4. Shared failure domain</h2>
+          <p>If a critical component of the shared egress path fails, multiple tenants may lose connectivity at the same time.</p>
+          <p>The more tenants depend on the same components, the greater the potential blast radius.</p>
+          <p><strong>Shared egress concentrates both operational responsibility and failure risk.</strong></p>
+          <h2 id="when-does-shared-egress-make-sense">When does shared egress make sense?</h2>
+          <p>Shared egress can be a reasonable choice when tenants have predictable traffic patterns, configuration changes are well controlled, and the platform's regulatory, audit and traffic-isolation requirements are lightweight.</p>
+          <p>It becomes harder to justify when tenants have very different traffic profiles, require distinct external identities, need strong isolation, or operate under strict regulatory constraints.</p>
+          <p>Cost also deserves careful scrutiny. A shared solution may reduce infrastructure complexity, but network traffic is usually a major part of the overall bill anyway. The savings may therefore be smaller than expected compared to a per-tenant segregated egress solution, particularly once the engineering effort required to manage policies, capacity and failures is taken into account.</p>
+          <p>I would also be cautious about offering both shared and per-tenant segregated egress on the same platform. Supporting two models can complicate architecture, automation and operations for both the platform team and its tenants. That complexity needs to be justified by a meaningful difference in requirements or risk.</p>
+          <h2 id="questions-i-would-ask-before-choosing">Questions I would ask before choosing</h2>
+          <p>As a CTO, I would want clear answers to four questions:</p>
+          <ul>
+          <li><strong>Capacity:</strong> Can one tenant's traffic degrade another tenant's connectivity?</li>
+          <li><strong>Blast radius:</strong> How many tenants could be affected by a single failure or configuration mistake?</li>
+          <li><strong>Availability:</strong> What happens to tenant connectivity if a shared egress component fails?</li>
+          <li><strong>Compliance:</strong> Does the applicable regulatory framework permit this degree of sharing, including its implications for traffic control and audit?</li>
+          </ul>
+          <p>These are architectural trade-offs, not merely implementation details. They influence operational risk, support effort and the level of isolation the platform can offer.</p>
+          <p>Shared infrastructure creates shared risks and responsibilities. The purpose of a multi-tenant platform is to find <strong>the right trade-offs between shared infrastructure and tenant isolation</strong>.</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

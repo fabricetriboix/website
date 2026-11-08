@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>When should a company build a multi-tenant platform rather than buy one? | Fabrice Triboix</title>
+    <meta name="description" content="There is no off-the-shelf fully functional multi-tenant platform you can buy." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <img class="article-hero" src="../assets/blog/when-to-build-a-multi-tenant-platform.jpg" alt="When should a company build a multi-tenant platform rather than buy one?" width="1600" height="900" />
+        <h1>When should a company build a multi-tenant platform rather than buy one?</h1>
+          <p>This is actually a trick question since, as far as I know, there is currently no off-the-shelf fully functional multi-tenant platform you can buy. I will still go through related options and what you can do instead of building your own multi-tenant platform from scratch.</p>
+          <p>The closest you can buy is a Platform-as-a-Service solution, such as AWS Elastic Beanstalk, AWS Amplify or Heroku. Then you can create one platform per tenant per environment. It would not be a true multi-tenant platform, more like entirely segregated tenants sharing the same infrastructure-as-code codebase. Please note that this multiplies quickly: every tenant and every environment is a separate platform to operate.</p>
+          <p>Such solutions are very unlikely to produce the results you seek nor pass an audit on their own. I did some research and could not find a single product that would offer:</p>
+          <ul>
+          <li>comprehensive observability and alerting</li>
+          <li>tenant (or app) onboarding</li>
+          <li>promotion mechanism to promote an app to higher environments</li>
+          <li>egress solution</li>
+          <li>secure build pipeline with vulnerability scanning and SBOM management</li>
+          </ul>
+          <p>So even if you decide to use an off-the-shelf PaaS, you still have a lot of work in front of you to implement all the features of a multi-tenant platform and make it compliant with whatever regulations apply to your business. It is not an impossible task, but you would need to think carefully about what your requirements are and consider these off-the-shelf PaaS solutions as a component of your overall platform.</p>
+          <p>I am working on a multi-tenant platform suitable for large, regulated businesses: <a href="https://github.com/fabricetriboix/eurus-aws">eurus-aws</a>. Although it is only half finished at the time I am writing this article, you are free to re-use its existing components or follow the trade-offs I explained in the Mini-ADR. This entire codebase in open-source.</p>
+          <p>I suspect this article did not fully answer the questions you had, but hopefully I gave you some insights. And please remember: platform engineering is hard, and a PaaS on its own will not make it easy.</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

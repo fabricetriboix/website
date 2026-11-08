@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What should the platform team actually own? | Fabrice Triboix</title>
+    <meta name="description" content="Let responsibilities follow governance, and use managed services and automation to keep the effort light." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <img class="article-hero" src="../assets/blog/what-should-the-platform-team-actually-own.png" alt="What should the platform team actually own?" width="1600" height="900" />
+        <h1>What should the platform team actually own?</h1>
+          <p>The answer seems obvious: as little as possible. Push down as much as possible to the tenants! Oh, wait. The tenants don't want to own too much either, especially when it's platform-related and outside their domain of competence.</p>
+          <p>So what should be done? The underlying assumption here is:</p>
+          <blockquote>
+          <p>ownership = lots of engineering hours</p>
+          </blockquote>
+          <p>But it doesn't have to be this way. I see two main answers to the problem:</p>
+          <ol type="1">
+          <li>Use managed services from your cloud provider as much as possible.</li>
+          <li>Automate as much as possible.</li>
+          </ol>
+          <p>Using managed services makes sense for both the platform team and the tenants. AWS, for example, has entire teams dedicated to operating and improving each one of its services at a scale that most companies could never replicate. Why not let them own your databases or observability infrastructure? You still need to own the configuration, of course, but that's much lighter work than managing a PostgreSQL or Prometheus installation yourself.</p>
+          <p>Automation can make things much simpler for everyone too. For example, a tenant could configure its egress ports through a simple YAML file in a pull request owned by the tenant. The platform team reviews and approves the pull request, and the configuration is then deployed automatically.</p>
+          <p>The ownership boundaries are clear: The tenant owns what it needs. The platform team owns the decision and how that request is safely delivered. And yet the workload is light for everyone involved.</p>
+          <p>My argument is simple:</p>
+          <p>Let responsibilities follow your governance structures, and use managed services and automation to minimise the effort required to exercise that ownership.</p>
+          <p>The goal isn't to minimise ownership. It's to minimise the effort required to exercise it.</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

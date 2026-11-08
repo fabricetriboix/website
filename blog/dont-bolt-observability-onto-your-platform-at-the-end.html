@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Don't bolt observability onto your platform at the end | Fabrice Triboix</title>
+    <meta name="description" content="Observability should be designed into the platform from the beginning, with canaries as each capability is built." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <img class="article-hero" src="../assets/blog/dont-bolt-observability.png" alt="Don't bolt observability onto your platform at the end" width="1600" height="900" />
+        <h1>Don't bolt observability onto your platform at the end</h1>
+          <p>One of the most expensive mistakes in platform engineering is treating observability and alerting as something to add once the platform is "finished". By then, the architecture is complex, deadlines are tight, and nobody has had enough time to decide which signals actually matter. The result is often a platform that technically works, but becomes difficult to operate when something goes wrong.</p>
+          <p>I believe observability should be designed into the platform from the beginning.</p>
+          <p>One of the most useful patterns I've used on multi-tenant platforms is the canary: a continuous health check that proves an important part of the platform is actually working. For example, a canary could periodically verify that an egress path can reach an on-premise service and receive a valid response. Another could verify that the pipeline used to build and deploy tenant applications is still working end-to-end.</p>
+          <p>These checks give the platform team something much more useful than a collection of infrastructure metrics: <strong>evidence that a critical capability actually works</strong>.</p>
+          <p>As each platform capability is built, add its canary. Over time, you build a simple view of the health of the platform's critical paths.</p>
+          <p>This also catches regressions early. I've seen platforms where something broke because of a change made weeks earlier, with nobody noticing until an unrelated problem forced engineers to investigate it. A useful canary can turn that investigation from hours of detective work into a failed check with a clear starting point.</p>
+          <p>The other reason to start early is that good observability is hard. The objective isn't to collect every metric, create hundreds of dashboards and generate an alert for every unusual event. <strong>Less is often more</strong>. The important question is: Which signals tell us that something is wrong, and what action should somebody take when they change? An alert that doesn't trigger a response is probably not an alert worth having.</p>
+          <p>Starting early gives the platform team time to discover which signals actually matter as each component is designed. The result is usually a much smaller, more useful observability system than the collection of generic dashboards and alerts that often gets added just before production.</p>
+          <p>When building a new platform, I would want every important capability to answer three questions:</p>
+          <ol type="1">
+          <li>How do we know it is working?</li>
+          <li>How do we know when it stops working?</li>
+          <li>What should happen when it fails?</li>
+          </ol>
+          <p>If you can answer those questions from the beginning, observability becomes part of the platform rather than another project that follows it.</p>
+          <p>What about your organisation? How early do you build observability into your platforms?</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

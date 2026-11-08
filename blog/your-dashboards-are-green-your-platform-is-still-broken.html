@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your dashboards are green, your platform is still broken | Fabrice Triboix</title>
+    <meta name="description" content="Green infrastructure dashboards are not proof that the platform is doing its job." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <img class="article-hero" src="../assets/blog/your-dashboards-are-green-your-platform-broken.png" alt="Your dashboards are green, your platform is still broken" width="1600" height="900" />
+        <h1>Your dashboards are green, your platform is still broken</h1>
+          <p>Everything looks fine: CPU usage is normal, memory usage is normal, nodes are healthy, no alarm is firing. And yet your tenants can't build or deploy their applications, users are getting errors, or a critical integration stopped working.</p>
+          <p>This is not a far-fetched scenario, in fact I witnessed such situations myself several times. Dashboards can tell you that your infrastructure is healthy without telling you that your platform is actually working. What is easy to measure is usually what gets measured: CPU, memory, disks, network utilisation, nodes. Those signals get packaged into dashboards and alerts and often this is considered "observability done". But they don't necessarily answer what really matters: can the platform do what it is supposed to do?</p>
+          <p>In order to answer that question, the monitoring needs to go beyond basic, readily available metrics, and cover the critical paths within the platform. This is typically done through synthetic checks (sometimes called "canaries") that exercise functions within the platform end-to-end, for example:</p>
+          <ul>
+          <li>Can a tenant build its applications?</li>
+          <li>Can a tenant deploy its applications?</li>
+          <li>Can users reach the workloads?</li>
+          <li>Can workloads reach external or on-prem services?</li>
+          <li>Can an application retreive its secrets?</li>
+          <li>Are the observability functions themselves working?</li>
+          </ul>
+          <p>You want your platform to continuously prove that it works, rather than inferring a health status from individual components. For example, infrastructure-level monitoring might tell you that the load balancer is healthy, while a canary can tell you that users still can't reach a tenant application. Ideally, such a canary should help identify which part of the path is failing.</p>
+          <p>In a multi-tenant platform, the problem is compounded by the fact that the platform itself can show as healthy, while a particular tenant is experiencing problems. This could be caused by:</p>
+          <ul>
+          <li>a routing issue</li>
+          <li>an IAM problem</li>
+          <li>incorrect configuration</li>
+          <li>an egress restriction</li>
+          <li>a broken pipeline</li>
+          </ul>
+          <p>Therefore, you also need tenant-level canaries to continuously verify that tenant-related functions are up and running.</p>
+          <p>This brings us to alerting, where again the easiest things to measure are the ones that are dealt with: alerts on high CPU, high memory, disks getting full, etc. Such alerts have their place, but you ideally want to identify a small number of business and platform critical paths and set alerts on those, typically using the canaries discussed above. Adding more and more alerts is usually counter-productive because drowning your team in alerts is the best way to make sure the important ones are ignored.</p>
+          <p>In observability and alerting, less is more.</p>
+          <p>With this in mind, here are questions I would ask as a CTO or Head of Platform:</p>
+          <ul>
+          <li>Can you tell me when the platform stops doing its job, not just when a component fails?</li>
+          <li>Can you prove that your critical tenant journeys work end-to-end?</li>
+          <li>Do we have visibility into tenant health as well as platform health?</li>
+          <li>Are there any alerts being routinely ignored by the platform team or the incident response team?</li>
+          </ul>
+          <p>Green dashboards are reassuring, but they are not proof that the platform is doing its job. The best observability systems don't simply tell you that your infrastructure is alive. They tell you whether your platform is delivering the capabilities your tenants and their users depend on.</p>
+          <p>When was the last time your platform actually proved that its most important paths were working?</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

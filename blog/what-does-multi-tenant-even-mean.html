@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What does &quot;multi-tenant&quot; even mean? | Fabrice Triboix</title>
+    <meta name="description" content="What multi-tenant means on a platform at a bank or a fintech, as opposed to SaaS." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <img class="article-hero" src="../assets/blog/what-does-multi-tenant-mean.jpg" alt="What does &quot;multi-tenant&quot; even mean?" width="1600" height="900" />
+        <h1>What does &quot;multi-tenant&quot; even mean?</h1>
+          <p>There is quite a lot of confusion about the phrase "multi-tenant". In this short article, I would like to explain what I mean by "multi-tenant" when I talk about platforms at banks and fintechs, because the other common meaning will send you down the wrong path.</p>
+          <p>In Software-as-a-Service, "multi-tenant" usually means one software product serving many customers that don't see each other. Typical examples are Shopify, where customers can create their web stores without knowing anything about other stores hosted by this software, and Slack, which enables internal chats for companies; again, each customer has no knowledge of other customers.</p>
+          <p>We are talking about something else here. As an organisation grows, multiple teams work on various apps and all these apps need to run on some infrastructure. If you let this grow organically, each team will re-invent the wheel by provisioning its own infrastructure. The solution is to use a multi-tenant platform that will standardise how workloads are run, how databases are managed, how networks are structured, how observability is configured, etc.</p>
+          <p>A multi-tenant platform is thus an "opinionated" infrastructure implementation that makes it easy for tenants to run their applications, provided they fit into the mould. One might ask what exactly multi-tenancy is.</p>
+          <p>At its core, the idea is to allow tenant teams to run applications in a streamlined way. The concept of "tenant" itself implies a level of segregation, just like real-life tenants in a multi-unit building share the overall infrastructure, but each benefits from their own environment isolated from other tenants. Ideally, they won't hear what their neighbour is watching on TV.</p>
+          <p>The level of isolation you need depends on the requirements imposed on your platform. An e-commerce platform won't have the same compliance requirements as a banking platform running business-critical services. The former might have light requirements, for example by using a shared database with different schemas, and allowing free traffic between tenants. The latter might consider separate database instances and an internal ingress to filter traffic between tenants, and it must be able to prove that isolation to an auditor.</p>
+          <p>In short, "multi-tenancy" is defined as running applications for different tenant teams on a shared infrastructure platform, with levels of isolation that vary based on the compliance requirements imposed on the platform and/or tenants. Developing a multi-tenant platform is hard and costly, so you should run a cost-benefit analysis before you start. There is no point building one if you have just a few teams and a standard pipeline would be sufficient.</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What should a fintech CTO learn about the GCP outage of 20th Oct 2026? | Fabrice Triboix</title>
+    <meta name="description" content="What a fintech CTO or Head of Platform should take from the GCP europe-west2-b outage of 20 October 2026." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <h1>What should a fintech CTO learn about the GCP outage of 20th Oct 2026?</h1>
+          <p>On the 20th of October 2026, the Google Cloud <code>europe-west2-b</code> availability zone went down for about six hours due to some misconfiguration related to switching to power generators. This article explores what a CTO or Head of Platform should learn for what happened and build a platform that would withstand such problems.</p>
+          <p>This event happened at Google Cloud, but it could have happened to AWS or Azure. As a client of such cloud vendors, you must prepare for similar events in the future. All cloud vendors ensure their datacenters are isolated from each other as much as possible, especially in terms of power supplies. Indeed, the other availability zones in this GCP region did not lose power.</p>
+          <p>However, and this is the main takeaway from this article, the other availability zones were still affected and the entire region was severly degraded. Services running in the affected availability zones all attempted to switch over to the other availability zone in the region at the same time. This resulted in a "Thundering Herd" problem. The other two availability zones could not withstand the workload that was attempt to switch to them.</p>
+          <p>This means that to ensure high availabiliy, you might need to consider a multi-region setup. On AWS, this isn't as straightforward as a multi-availability zone setup. It's more costly and more difficult to configure. So you will need to run a cost-benefit analysis and decide for your business whether the added availability is worth the extra costs to build such a platform, which would invariably be more complex.</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

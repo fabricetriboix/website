@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What a CTO should know before choosing Kubernetes | Fabrice Triboix</title>
+    <meta name="description" content="A short comparison of Kubernetes and autoscaling groups, for CTOs choosing a platform." />
+    <meta name="theme-color" content="#001733" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <h1>What a CTO should know before choosing Kubernetes</h1>
+          <p>In this short article, I would like to compare and contrast two ways of running workloads: Kubernetes (K8S) and VMs/containers in autoscaling groups behind load balancers (ASG). The second option is "old technology", out of fashion and boring, but it is also well-tested, reliable and fully managed by your cloud provider; so it might well be just what you need.</p>
+          <p>The advantages of Kubernetes are:</p>
+          <ul>
+          <li>In theory, you can port your platform everywhere a Kubernetes cluster can run. In practice, if you use a managed solution such an Amazon Elastic Kubernetes Service or Azure Kubernetes Service, you will have some level of vendor tie-in (pod identities, storage classes, network plugins, etc.) and will find moving to a different provider quite difficult.</li>
+          <li>You can run heterogeneous workloads on the same cluster (eg: workloads required GPUs, high performance storage, or custom networking)</li>
+          <li>A vast ecosystem providing additional, and often necessary, features</li>
+          </ul>
+          <p>The disadvantages of Kubernetes are:</p>
+          <ul>
+          <li>You have to upgrade your Kubernetes cluster every 3 to 4 months</li>
+          <li>You often need a constellation of additional software (Istio, ArgoCD, OpenTelemetry Collector, various operators, etc.) which you have to manage, upgrade periodically and troubleshoot yourself</li>
+          <li>Even when using a managed Kubernetes solutions, you still have to debug and manage worker nodes; eg: disks fill up, the node crashes or stops responding, etc.</li>
+          <li>You increase the attack surface because Kubernetes sometimes have vulnerabilities, as do the collection of additional services you run on it.</li>
+          <li>Kubernetes-based platforms are typically complex and require highly experienced engineers to set them up, troubleshoot them and maintain them.</li>
+          </ul>
+          <p>Some might point at additional K8S features: RBAC, service mesh, namespaces, etc. But these are features tied to the K8S itself and are there only to make it useful. They don't add any business value compared to equivalent services provided by your cloud provider in an ASG solution. Some K8S features could arguably require significant work to port to an ASG solution (eg: admission policies), but these usually won't be too hard to implement for ASG and rarely justify the costs associate to switching wholesale to K8S.</p>
+          <p>Advantages of an ASG solution:</p>
+          <ul>
+          <li>As simple as it gets</li>
+          <li>Typically uses only managed services from the cloud provider, and thus limits the risks of attacks and downtime</li>
+          <li>Even junior engineers can reason with such an architecture</li>
+          <li>Almost always significantly cheaper to run than a K8S solution</li>
+          </ul>
+          <p>Disadvantages of an ASG solution:</p>
+          <ul>
+          <li>Vendor lock-in for all the infrastructure layers</li>
+          <li>Running heterogeneous workloads requires multiple autoscaling groups. However, in all honesty, having parallel autoscaling groups is not hard at all, so this is a very weak argument.</li>
+          </ul>
+          <p>In conclusion, you might be able to fulfil all your platform requirements with a cheap, simple solution. Do not immediately jump to the conclusion that in order to run containers you need Kubernetes, you might embark on a difficult path full of perils. You should count that K8S will increase the complexity of your architecture and your headcount by an order of magnitude.</p>
+          <p>There is one area were K8S would shine though, in my opinion, and it is when you have a requirement to be able to switch cloud vendors at a moment's notice and you are comfortable managing your own clusters rather than using your cloud vendor's solution. The drawback is the massively increased attack surface from using K8S and all the various tools you need to run inside your cluster to make it useful.</p>
+          <p>I know this is a touchy topic and if you have further questions, please do not hesitate to comment and I will respond.</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Work is invoiced through Falcon One Limited, registered in England no
+          5854724.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

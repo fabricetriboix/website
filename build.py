@@ -14,6 +14,49 @@ POSTS = CONSULTING / "Blog posts"
 
 LINKEDIN = "https://linkedin.com/in/ftriboix"
 
+CONSENT_AND_TAG = """    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'denied',
+        personalization_storage: 'denied',
+        security_storage: 'granted',
+        wait_for_update: 500
+      });
+      try {
+        var savedConsent = localStorage.getItem('ft-consent');
+        if (savedConsent === 'granted') {
+          gtag('consent', 'update', {
+            ad_storage: 'granted',
+            ad_user_data: 'granted',
+            ad_personalization: 'granted',
+            analytics_storage: 'granted',
+            functionality_storage: 'denied',
+            personalization_storage: 'denied'
+          });
+        } else if (savedConsent === 'denied') {
+          gtag('consent', 'update', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied',
+            functionality_storage: 'denied',
+            personalization_storage: 'denied'
+          });
+        }
+      } catch (ignore) {}
+    </script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5CVMNLWQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    </script>"""
+
 
 def html_esc(text: str) -> str:
     return (
@@ -70,6 +113,7 @@ def header(active: str) -> str:
       <div class="wrap header-inner">
         <a class="wordmark" href="../index.html">Fabrice Triboix</a>
         <nav class="site-nav" aria-label="Primary">
+{item("../index.html#offers", "Offers", "offers")}
 {item("../index.html#work", "Work", "work")}
 {item("../index.html#writing", "Writing", "writing")}
           <a
@@ -97,11 +141,15 @@ def footer() -> str:
           >
         </p>
         <p class="footer-legal">
-          Work is invoiced through Falcon One Limited, registered in England no
-          5854724.
+          Falcon One Limited, 269 Farnborough Road, Farnborough, GU17 4LY.
+          Registered in England no 5854724.
+        </p>
+        <p class="footer-consent">
+          <button type="button" class="consent-manage">Privacy choices</button>
         </p>
       </div>
-    </footer>"""
+    </footer>
+    <script src="../consent.js"></script>"""
 
 
 def page(
@@ -121,6 +169,7 @@ def page(
     <title>{html_esc(title)} | Fabrice Triboix</title>
     <meta name="description" content="{html_esc(description)}" />
     <meta name="theme-color" content="#001733" />
+{CONSENT_AND_TAG}
     <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
@@ -216,6 +265,13 @@ CASE_STUDIES = [
 
 BLOGS = [
     {
+        "src": "blog-20261118-tenant-isolation-isnt-just-compliance.md",
+        "slug": "tenant-isolation-is-not-just-a-compliance-problem.html",
+        "image": "tenant-isolation-is-not-just-a-compliance-problem.png",
+        "image_class": "article-hero article-diagram",
+        "description": "Tenant isolation is a compliance requirement, and also a security and availability problem when tenants share resources.",
+    },
+    {
         "src": "blog-20261111-gcp-outage.md",
         "slug": "what-should-a-fintech-cto-learn-about-the-gcp-outage.html",
         "image": None,
@@ -310,8 +366,9 @@ def build_blogs() -> None:
         converted = re.sub(r"^<h1[^>]*>.*?</h1>\s*", "", converted, count=1, flags=re.S)
         image_html = ""
         if spec["image"]:
+            image_class = spec.get("image_class", "article-hero")
             image_html = (
-                f'        <img class="article-hero" src="../assets/blog/{spec["image"]}" '
+                f'        <img class="{html_esc(image_class)}" src="../assets/blog/{spec["image"]}" '
                 f'alt="{html_esc(title)}" width="1600" height="900" />\n'
             )
         body = (

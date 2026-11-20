@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tenant isolation is not just a compliance problem | Fabrice Triboix</title>
+    <meta name="description" content="Tenant isolation is a compliance requirement, and also a security and availability problem when tenants share resources." />
+    <meta name="theme-color" content="#001733" />
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'denied',
+        personalization_storage: 'denied',
+        security_storage: 'granted',
+        wait_for_update: 500
+      });
+      try {
+        var savedConsent = localStorage.getItem('ft-consent');
+        if (savedConsent === 'granted') {
+          gtag('consent', 'update', {
+            ad_storage: 'granted',
+            ad_user_data: 'granted',
+            ad_personalization: 'granted',
+            analytics_storage: 'granted',
+            functionality_storage: 'denied',
+            personalization_storage: 'denied'
+          });
+        } else if (savedConsent === 'denied') {
+          gtag('consent', 'update', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied',
+            functionality_storage: 'denied',
+            personalization_storage: 'denied'
+          });
+        }
+      } catch (ignore) {}
+    </script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5CVMNLWQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    </script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href="../index.html">Fabrice Triboix</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../index.html#offers">Offers</a>
+          <a href="../index.html#work">Work</a>
+          <a href="../index.html#writing" aria-current="page">Writing</a>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="article">
+      <div class="article-inner">
+        <a class="back" href="../index.html#writing">Back to writing</a>
+        <img class="article-hero article-diagram" src="../assets/blog/tenant-isolation-is-not-just-a-compliance-problem.png" alt="Tenant isolation is not just a compliance problem" width="1920" height="1080" />
+        <h1>Tenant isolation is not just a compliance problem</h1>
+          <p>For a regulated organisation, tenant isolation is definitely a compliance requirement for their multi-tenant platform. If you can't prove tenant isolation, you won't be able to get the green light from the auditors. Poor tenant isolation is obviously, first and foremost, a security risk. It's the possibility that a tenant will be able to read/write its data, break its business logic or leak sensitive information. That's why compliance is an absolute requirement. But tenant isolation goes beyond this.</p>
+          <p>For every resource that is shared between tenants, you run the risk of a "noisy neighbour" problem. This could be CPU/memory/network capacity (i.e. tenants running workload on the same node), or hogging the database, ingress or egress subsystems. A malicious or misconfigured tenant, even though they can't influence another tenant directly, might still be able to starve other tenants of database connections or ingress traffic, with severe consequences for the availability of the affected tenants.</p>
+          <p>Another aspect is the platform configuration. You have to ensure that all corner cases are accounted for so that a tenant's misconfiguration can't impact other tenants. For example, a bug in your platform might misconfigure a shared ingress by messing up with the firewall rules. All of a sudden, a change of configuration for tenant A negatively impacts tenant B. Despite all the efforts of your teams, bug are really hard to avoid. That's where I advocate the use of canaries. In the above case, a continuous health check would immediately pick up on the failure and raise an alert, allowing you to roll back the change straight away.</p>
+          <p>The main goal of a multi-tenant platform is to save on costs by standardising the infrastructure. This usually means finding the right trade-offs between dedicated and shared resources, and, in the latter case, how to control or mitigate the influence of tenants on said shared resources. Least-privilege permissions, rate limiting and quotas are often enough to ensure tenants are confined to their boundaries even when using resources shared with other tenants.</p>
+          <p>Or in summary: tenant isolation is at the heart of platform engineering.</p>
+
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-name">Fabrice Triboix</p>
+        <p>Independent consultant. Based in London; clients wherever they are.</p>
+        <p>
+          <a
+            href="https://linkedin.com/in/ftriboix"
+            target="_blank"
+            rel="noopener noreferrer"
+            >linkedin.com/in/ftriboix</a
+          >
+        </p>
+        <p class="footer-legal">
+          Falcon One Limited, 269 Farnborough Road, Farnborough, GU17 4LY.
+          Registered in England no 5854724.
+        </p>
+        <p class="footer-consent">
+          <button type="button" class="consent-manage">Privacy choices</button>
+        </p>
+      </div>
+    </footer>
+    <script src="../consent.js"></script>
+  </body>
+</html>

@@ -9,6 +9,48 @@
       content="Independent consultant. I help fintechs solve difficult problems with multi-tenant platforms on AWS and Kubernetes."
     />
     <meta name="theme-color" content="#001733" />
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'denied',
+        personalization_storage: 'denied',
+        security_storage: 'granted',
+        wait_for_update: 500
+      });
+      try {
+        var savedConsent = localStorage.getItem('ft-consent');
+        if (savedConsent === 'granted') {
+          gtag('consent', 'update', {
+            ad_storage: 'granted',
+            ad_user_data: 'granted',
+            ad_personalization: 'granted',
+            analytics_storage: 'granted',
+            functionality_storage: 'denied',
+            personalization_storage: 'denied'
+          });
+        } else if (savedConsent === 'denied') {
+          gtag('consent', 'update', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied',
+            functionality_storage: 'denied',
+            personalization_storage: 'denied'
+          });
+        }
+      } catch (ignore) {}
+    </script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5CVMNLWQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -17,6 +59,7 @@
       <div class="wrap header-inner">
         <a class="wordmark" href="index.html">Fabrice Triboix</a>
         <nav class="site-nav" aria-label="Primary">
+          <a href="#offers">Offers</a>
           <a href="#work">Work</a>
           <a href="#writing">Writing</a>
           <a
@@ -76,7 +119,7 @@
             <div>
               <span class="stat-num">3</span>
               <p class="stat-label">
-                tenants using per-tenant egress in production at NatWest Bank.
+                The NatWest Bank platform went live with three tenants.
                 The platform passed its audit.
               </p>
             </div>
@@ -103,9 +146,34 @@
       <div class="wrap">
         <p class="logos-kicker">Platform work at</p>
         <ul class="logo-row">
-          <li>NatWest Bank</li>
-          <li>HMRC</li>
-          <li>Pfizer</li>
+          <li>
+            <img
+              src="assets/logos/natwest.svg"
+              alt=""
+              width="132"
+              height="28"
+            />
+            NatWest Bank
+          </li>
+          <li>
+            <img
+              class="logo-crest"
+              src="assets/logos/hmrc.svg"
+              alt=""
+              width="45"
+              height="45"
+            />
+            HMRC
+          </li>
+          <li>
+            <img
+              src="assets/logos/pfizer.svg"
+              alt=""
+              width="1000"
+              height="409"
+            />
+            Pfizer
+          </li>
         </ul>
       </div>
     </section>
@@ -246,6 +314,82 @@
         </div>
       </section>
 
+      <section class="section section-navy" id="offers">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="kicker">Offers</p>
+            <h2>What you will have at the end</h2>
+          </div>
+          <div class="cards">
+            <a class="card" href="offers/platform-compass.html">
+              <h3 class="work-title">Platform Compass</h3>
+              <ul class="offer-points">
+                <li>
+                  A clear understanding of the risks related to your cloud
+                  infrastructure, prioritised by likelihood and business impact.
+                </li>
+                <li>
+                  A roadmap with effort estimates showing how to address those
+                  risks, how to optimise cloud costs and how to remove pain
+                  points, apply industry practice and improve the infrastructure.
+                </li>
+              </ul>
+              <span class="more">Read the detail</span>
+            </a>
+            <a class="card" href="offers/focused.html">
+              <h3 class="work-title">Focused</h3>
+              <ul class="offer-points">
+                <li>The task implemented and manually tested.</li>
+                <li>Basic documentation so your engineers can take over.</li>
+              </ul>
+              <span class="more">Read the detail</span>
+            </a>
+            <a class="card" href="offers/comprehensive.html">
+              <h3 class="work-title">Comprehensive</h3>
+              <ul class="offer-points">
+                <li>The task implemented to your satisfaction.</li>
+                <li>A basic test suite your team can run.</li>
+                <li>
+                  An alert as soon as the feature has a problem in production.
+                </li>
+                <li>
+                  Comprehensive documentation so engineers can take over with
+                  ease.
+                </li>
+                <li>One month of fixes.</li>
+              </ul>
+              <span class="more">Read the detail</span>
+            </a>
+            <a class="card" href="offers/strategic.html">
+              <h3 class="work-title">Strategic</h3>
+              <ul class="offer-points">
+                <li>The task implemented to your satisfaction.</li>
+                <li>An extensive test suite your team can run.</li>
+                <li>
+                  An alert as soon as the feature has a problem in production.
+                </li>
+                <li>Runbooks for the incident team.</li>
+                <li>
+                  Documentation so engineers can take over and make further
+                  changes.
+                </li>
+                <li>Three months of fixes.</li>
+                <li>
+                  A leadership briefing pack explaining how risks have been
+                  mitigated, with evidence and next priorities, ready for the
+                  board.
+                </li>
+                <li>
+                  An audit evidence pack mapped to operational resilience rules,
+                  ready for auditors and regulators.
+                </li>
+              </ul>
+              <span class="more">Read the detail</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section class="section section-paper" id="work">
         <div class="wrap">
           <div class="section-head">
@@ -340,6 +484,23 @@
             <h2>Notes for Heads of Platform and CTOs</h2>
           </div>
           <ul class="writing-list">
+            <li>
+              <a
+                href="blog/tenant-isolation-is-not-just-a-compliance-problem.html"
+              >
+                <time datetime="2026-11-18">18 November 2026</time>
+                <span>
+                  <h3 class="writing-title">
+                    Tenant isolation is not just a compliance problem
+                  </h3>
+                  <p class="writing-one">
+                    Tenant isolation is a compliance requirement, and also a
+                    security and availability problem when tenants share
+                    resources.
+                  </p>
+                </span>
+              </a>
+            </li>
             <li>
               <a href="blog/what-should-a-fintech-cto-learn-about-the-gcp-outage.html">
                 <time datetime="2026-11-11">11 November 2026</time>
@@ -526,10 +687,14 @@
           >
         </p>
         <p class="footer-legal">
-          Work is invoiced through Falcon One Limited, registered in England no
-          5854724.
+          Falcon One Limited, 269 Farnborough Road, Farnborough, GU17 4LY.
+          Registered in England no 5854724.
+        </p>
+        <p class="footer-consent">
+          <button type="button" class="consent-manage">Privacy choices</button>
         </p>
       </div>
     </footer>
+    <script src="consent.js"></script>
   </body>
 </html>
